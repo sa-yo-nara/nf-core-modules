@@ -2,22 +2,17 @@ process GAMETESDATASETS {
     tag "$meta.id"
     label 'process_single'
 
-    // TODO nf-core: List required Conda package(s).
-    //               Software MUST be pinned to channel (i.e. "bioconda"), version (i.e. "1.10").
-    //               For Conda, the build (i.e. "h9402c20_2") must be EXCLUDED to support installation on different operating systems.
-    // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gametes:2.1--py310h7cba7a3_0':
         'biocontainers/gametes:2.1--py310h7cba7a3_0' }"
-    input:
 
-    tuple val(meta), path(input_file)
-    //path input_file
+    input:
+    tuple val(meta), path(model)
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    tuple val(meta), path("${prefix}_EDM-*"), emit: scores
+    tuple val(meta), path("${prefix}_EDM-*") , emit: edmresults
     path "versions.yml"           , emit: versions
 
     //path "${prefix}_EDM-*"
@@ -27,10 +22,10 @@ process GAMETESDATASETS {
 
     script:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    # crea prefix
 
     prefix=\$(echo ${input_file} | awk -F'_Models.txt' '{print \$1}')
 
