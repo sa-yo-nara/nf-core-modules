@@ -55,14 +55,7 @@ process GAMETESDATASETS {
     gametes -i ${input_file} -D "-n ${params.alleleFrequencyMin} -x ${params.alleleFrequencyMax} -a ${params.totalAttributeCount} -s ${params.caseCount} -w ${params.controlCount} -r ${params.replicateCount} -o \${prefix}"
 
     """
-    samtools \\
-        sort \\
-        $args \\
-        -@ $task.cpus \\
-        -o ${prefix}.bam \\
-        -T $prefix \\
-        $bam
-
+ 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         gametesdatasets: \$(samtools --version |& sed '1!d ; s/samtools //')
