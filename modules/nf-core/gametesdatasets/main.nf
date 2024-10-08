@@ -35,9 +35,10 @@ process GAMETESDATASETS {
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    tuple val(meta), path("*.bam"), emit: bam
-    // TODO nf-core: List additional required output channels/values here
-    path "versions.yml"           , emit: versions
+    //tuple val(meta), path("*.bam"), emit: bam
+    //path "versions.yml"           , emit: versions
+
+    path "${prefix}_EDM-*"
 
     when:
     task.ext.when == null || task.ext.when
@@ -47,7 +48,11 @@ process GAMETESDATASETS {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    gametes -i ${input_file} -D "-n ${params.attributeAlleleFrequency} -x ${params.alleleFrequencyMax} -a ${params.totalAttributeCount} -s ${params.caseCount} -w ${params.controlCount} -r ${params.replicateCount} -o \${prefix}"
+    # crea prefix
+
+    prefix=\$(echo ${input_file} | awk -F'_Models.txt' '{print \$1}')
+
+    gametes -i ${input_file} -D "-n ${params.alleleFrequencyMin} -x ${params.alleleFrequencyMax} -a ${params.totalAttributeCount} -s ${params.caseCount} -w ${params.controlCount} -r ${params.replicateCount} -o \${prefix}"
 
     """
     samtools \\
