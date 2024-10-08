@@ -22,10 +22,10 @@ nextflow_process {
             process {
                 """
                 // TODO nf-core: define inputs of the process here. Example:
-                
+
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file("https://raw.githubusercontent.com/msantorsola/random_tests/main/model_h0.2_p0.3_a0.3_f0.4_quantile_1_Models.txt", checkIfExists: true),
                 ]
                 """
             }
@@ -51,7 +51,7 @@ nextflow_process {
             process {
                 """
                 // TODO nf-core: define inputs of the process here. Example:
-                
+
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
