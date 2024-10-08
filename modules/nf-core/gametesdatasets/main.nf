@@ -30,15 +30,15 @@ process GAMETESDATASETS {
 
     input:
 
-    //tuple val(meta), path(bam)
-    path input_file
+    tuple val(meta), path(input_file)
+    //path input_file
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    //tuple val(meta), path("*.bam"), emit: bam
-    //path "versions.yml"           , emit: versions
+    tuple val(meta), path("${prefix}_EDM-*"), emit: scores
+    path "versions.yml"           , emit: versions
 
-    path "${prefix}_EDM-*"
+    //path "${prefix}_EDM-*"
 
     when:
     task.ext.when == null || task.ext.when
